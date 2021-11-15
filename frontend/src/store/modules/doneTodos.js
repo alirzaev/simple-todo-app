@@ -13,7 +13,7 @@ export default {
   actions: {
     async load (context) {
       try {
-        const response = await api.get('/api/v1/')
+        const response = await api.get('/api/v1/done/')
 
         const data = response.data
 
@@ -22,23 +22,16 @@ export default {
         console.log(error)
       }
     },
-    async makeDone ({ dispatch }, id) {
+    async makeUndone ({ dispatch }, id) {
       try {
         await api.patch(`/api/v1/${id}/`, {
-          done: true
+          done: false
         })
 
         await dispatch('load')
       } catch (error) {
         console.log(error)
       }
-    },
-    async update (context, todo) {
-      const response = await api.put(`/api/v1/${todo.id}/`, {
-        ...todo
-      })
-
-      return response.data
     }
   }
 }

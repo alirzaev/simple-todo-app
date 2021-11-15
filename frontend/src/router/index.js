@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import Todo from '@/views/Todo.vue'
+import DoneTodos from '@/views/DoneTodos.vue'
 import store from '@/store'
 
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
     path: '/todo/:id',
     name: 'Todo',
     component: Todo
+  },
+  {
+    path: '/done',
+    name: 'DoneTodos',
+    component: DoneTodos
   }
 ]
 

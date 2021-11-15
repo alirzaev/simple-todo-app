@@ -46,18 +46,16 @@ export default {
         commit('setPending', false)
       }
     },
-    async update ({ commit, state }, patch = {}) {
+    async update ({ commit, dispatch, state }, patch = {}) {
       commit('setPending', true)
       commit('setError', undefined)
 
       try {
         const todo = state.todo
-        const response = await api.put(`/api/v1/${todo.id}/`, {
+        const data = await dispatch('todos/update', {
           ...todo,
           ...patch
-        })
-
-        const data = response.data
+        }, { root: true })
 
         commit('setTodo', data)
       } catch (error) {

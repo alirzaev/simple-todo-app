@@ -1,7 +1,7 @@
 <template>
   <div class="todo">
       <span class="todo__title text-primary" @click="openTodo">{{ title }}</span>
-      <i class="todo__icon ms-3 bi bi-check-circle" @click="makeDone(id)"></i>
+      <i class="todo__icon ms-3 bi" :class="classes" @click="toggleDone(id)"></i>
   </div>
 </template>
 
@@ -11,12 +11,21 @@ import { mapActions } from 'vuex'
 export default {
   name: 'TodoListItem',
   props: {
+    id: Number,
     title: String,
-    id: Number
+    done: Boolean
+  },
+  computed: {
+    classes () {
+      return [this.done ? 'bi-check-circle' : 'bi-circle']
+    }
   },
   methods: {
     ...mapActions('todos', [
       'makeDone'
+    ]),
+    ...mapActions('doneTodos', [
+      'makeUndone'
     ]),
     openTodo () {
       this.$router.push({
@@ -25,6 +34,13 @@ export default {
           id: this.$props.id
         }
       })
+    },
+    toggleDone () {
+      if (this.done) {
+        this.makeUndone(this.id)
+      } else {
+        this.makeDone(this.id)
+      }
     }
   }
 }
