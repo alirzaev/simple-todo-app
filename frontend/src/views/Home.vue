@@ -1,17 +1,22 @@
 <template>
   <div class="row justify-content-center">
-    <div class="todos col-md-6 col-sm-12 pt-2 pb-2">
-      <TodoListItem v-for="todo in todos" v-bind:key="todo.id" :title="todo.title"/>
+    <div class="col-md-6 col-sm-12">
+      <div class="todos mt-2 mb-3">
+        <TodoListItem v-for="todo in todos" v-bind:key="todo.id" :title="todo.title" :id="todo.id"/>
+      </div>
+      <AddTodo/>
     </div>
   </div>
 </template>
 
 <script>
+import AddTodo from '@/components/AddTodo'
 import TodoListItem from '@/components/TodoListItem'
 
 export default {
   name: 'Home',
   components: {
+    AddTodo,
     TodoListItem
   },
   created () {

@@ -1,9 +1,10 @@
-import axios from 'axios'
+import { api } from '@/api'
 
 export default {
   state: () => ({
     token: undefined,
-    pending: false
+    pending: false,
+    error: undefined
   }),
   mutations: {
     setToken (state, token) {
@@ -18,37 +19,43 @@ export default {
     },
     setPending (state, pending) {
       state.pending = pending
+    },
+    setError (state, error) {
+      state.error = error
     }
   },
   actions: {
-    loadToken (context) {
+    loadToken ({ commit }) {
       const token = localStorage.getItem('token')
 
       if (token) {
-        context.commit('setToken', token)
+        commit('setToken', token)
       }
     },
-    async login (context, { username, password }) {
+    async login ({ commit }, { username, password }) {
       try {
-        context.commit('setPending', true)
+        commit('setPending', true)
+        commit('setError', undefined)
 
-        const response = await axios.post('http://localhost:8000/api/v1/auth/login/', {
+        const response = await api.post('/api/v1/auth/login/', {
           username,
           password
         })
         const data = response.data
 
-        context.commit('setToken', data.key)
+        commit('setToken', data.key)
 
         return true
       } catch (error) {
+        commit('setError', error.response?.data ?? true)
+
         return false
       } finally {
-        context.commit('setPending', false)
+        commit('setPending', false)
       }
     },
-    logout (context) {
-      context.commit('deleteToken')
+    logout ({ commit }) {
+      commit('deleteToken')
     }
   }
 }

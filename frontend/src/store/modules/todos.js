@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { api } from '@/api'
 
 export default {
   state: () => ({
@@ -11,18 +11,23 @@ export default {
   },
   actions: {
     async loadTodos (context) {
-      const token = context.rootState.auth.token
-
       try {
-        const response = await axios.get('http://localhost:8000/api/v1/', {
-          headers: {
-            Authorization: `Token ${token}`
-          }
-        })
+        const response = await api.get('/api/v1/')
 
         const data = response.data
 
         context.commit('setTodosList', data)
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    async makeDone ({ dispatch }, id) {
+      try {
+        await api.patch(`/api/v1/${id}/`, {
+          done: true
+        })
+
+        await dispatch('loadTodos')
       } catch (error) {
         console.log(error)
       }

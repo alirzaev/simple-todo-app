@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
+import Home from '@/views/Home.vue'
+import Login from '@/views/Login.vue'
+import Todo from '@/views/Todo.vue'
 import store from '@/store'
 
 const routes = [
@@ -13,6 +14,11 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/todo/:id',
+    name: 'Todo',
+    component: Todo
   }
 ]
 

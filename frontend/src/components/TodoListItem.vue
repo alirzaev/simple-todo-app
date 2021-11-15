@@ -1,6 +1,7 @@
 <template>
-  <div class="todo p-3">
-      <span class="text-primary">{{ title }}</span><i class="ms-auto text-primary bi bi-check-circle"></i>
+  <div class="todo">
+      <span class="todo__title text-primary" @click="openTodo">{{ title }}</span>
+      <i class="todo__icon ms-3 bi bi-check-circle" @click="makeDone"></i>
   </div>
 </template>
 
@@ -8,23 +9,55 @@
 export default {
   name: 'TodoListItem',
   props: {
-    title: String
+    title: String,
+    id: Number
+  },
+  methods: {
+    openTodo () {
+      this.$router.push({
+        name: 'Todo',
+        params: {
+          id: this.$props.id
+        }
+      })
+    },
+    makeDone () {
+      this.$store.dispatch('makeDone', this.$props.id)
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.todo {
-    background-color: #f8f9fa;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-    cursor: pointer;
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
+@import "@/../node_modules/bootstrap/scss/functions";
+@import "@/../node_modules/bootstrap/scss/variables";
 
-    &:not(:hover) .bi-check-circle {
-      display: none;
+.todo {
+  background-color: #f8f9fa;
+  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.25);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  transition: box-shadow 0.15s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.25);
+  }
+
+  &__icon {
+    color: $gray-600;
+    transition: color 0.15s ease-in-out;
+
+    &:hover {
+      color: $primary;
     }
+  }
+
+  &__title {
+    flex-grow: 1;
+  }
 }
 </style>

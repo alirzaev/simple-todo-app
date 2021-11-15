@@ -1,15 +1,15 @@
 <template>
-  <div class="container">
-    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <div class="container">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <router-link to="/" class="nav-link">Главная</router-link>
+          <router-link to="/" class="nav-link"><i class="bi bi-list-check me-1"></i>Задачи</router-link>
         </li>
       </ul>
       <button class="btn btn-outline-danger" v-if="isAuth" @click="logout">Выйти</button>
       <router-link class="btn btn-outline-primary" to="/login" v-else>Войти</router-link>
-    </nav>
   </div>
+    </nav>
   <div class="container">
     <router-view/>
   </div>
