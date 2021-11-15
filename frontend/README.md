@@ -1,4 +1,4 @@
-# frontend
+# Простое TODO-приложение: frontend
 
 ## Project setup
 ```
