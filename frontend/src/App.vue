@@ -8,8 +8,8 @@
       </ul>
       <button class="btn btn-outline-danger" v-if="isAuth" @click="logout">Выйти</button>
       <router-link class="btn btn-outline-primary" to="/login" v-else>Войти</router-link>
-  </div>
-    </nav>
+    </div>
+  </nav>
   <div class="container">
     <router-view/>
   </div>

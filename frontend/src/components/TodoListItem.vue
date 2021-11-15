@@ -1,11 +1,13 @@
 <template>
   <div class="todo">
       <span class="todo__title text-primary" @click="openTodo">{{ title }}</span>
-      <i class="todo__icon ms-3 bi bi-check-circle" @click="makeDone"></i>
+      <i class="todo__icon ms-3 bi bi-check-circle" @click="makeDone(id)"></i>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'TodoListItem',
   props: {
@@ -13,6 +15,9 @@ export default {
     id: Number
   },
   methods: {
+    ...mapActions([
+      'makeDone'
+    ]),
     openTodo () {
       this.$router.push({
         name: 'Todo',
@@ -20,9 +25,6 @@ export default {
           id: this.$props.id
         }
       })
-    },
-    makeDone () {
-      this.$store.dispatch('makeDone', this.$props.id)
     }
   }
 }

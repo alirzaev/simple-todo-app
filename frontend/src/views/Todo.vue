@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'Todo',
@@ -40,12 +40,10 @@ export default {
     this.$store.dispatch('loadTodo', this.$route.params.id)
   },
   methods: {
-    update () {
-      this.$store.dispatch('updateTodo')
-    },
-    toggleDone () {
-      this.$store.dispatch('toggleTodoDone')
-    }
+    ...mapActions({
+      update: 'updateTodo',
+      toggleDone: 'toggleTodoDone'
+    })
   },
   computed: {
     ...mapState({

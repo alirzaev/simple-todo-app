@@ -2,7 +2,7 @@
   <form @submit.prevent="addTodo">
     <div class="input-group mb-3">
       <input type="text" class="form-control" placeholder="Новая задача" v-model="task" :disabled="pending"
-             maxlength="200" required>
+             maxlength="200" required/>
       <button class="btn btn-outline-primary" type="submit" :disabled="pending">
         <span v-if="pending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         <i v-else class="bi bi-plus"></i>
@@ -12,14 +12,14 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   name: 'AddTodo',
   methods: {
-    addTodo () {
-      this.$store.dispatch('addTodo')
-    }
+    ...mapActions([
+      'addTodo'
+    ])
   },
   computed: {
     ...mapState({
