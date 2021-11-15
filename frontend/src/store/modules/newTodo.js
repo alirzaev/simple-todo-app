@@ -1,4 +1,4 @@
-import { api } from '@/api'
+import { client } from '@/api'
 
 export default {
   namespaced: true,
@@ -24,7 +24,7 @@ export default {
         commit('setPending', true)
         commit('setError', undefined)
 
-        await api.post('/api/v1/', {
+        await client.post('/api/v1/', {
           title: state.task
         })
 

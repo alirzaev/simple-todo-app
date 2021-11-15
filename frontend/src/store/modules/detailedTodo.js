@@ -1,4 +1,4 @@
-import { api } from '@/api'
+import { client } from '@/api'
 
 export default {
   namespaced: true,
@@ -35,7 +35,7 @@ export default {
       commit('setError', undefined)
 
       try {
-        const response = await api.get(`/api/v1/${id}/`)
+        const response = await client.get(`/api/v1/${id}/`)
 
         const data = response.data
 

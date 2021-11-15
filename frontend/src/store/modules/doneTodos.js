@@ -1,4 +1,4 @@
-import { api } from '@/api'
+import { client } from '@/api'
 
 export default {
   namespaced: true,
@@ -13,7 +13,7 @@ export default {
   actions: {
     async load (context) {
       try {
-        const response = await api.get('/api/v1/done/')
+        const response = await client.get('/api/v1/done/')
 
         const data = response.data
 
@@ -24,7 +24,7 @@ export default {
     },
     async makeUndone ({ dispatch }, id) {
       try {
-        await api.patch(`/api/v1/${id}/`, {
+        await client.patch(`/api/v1/${id}/`, {
           done: false
         })
 

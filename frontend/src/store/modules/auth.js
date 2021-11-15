@@ -1,4 +1,4 @@
-import { api } from '@/api'
+import { client } from '@/api'
 
 export default {
   namespaced: true,
@@ -38,7 +38,7 @@ export default {
         commit('setPending', true)
         commit('setError', undefined)
 
-        const response = await api.post('/api/v1/auth/login/', {
+        const response = await client.post('/api/v1/auth/login/', {
           username,
           password
         })
