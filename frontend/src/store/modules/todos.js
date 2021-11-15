@@ -39,6 +39,22 @@ export default {
       })
 
       return response.data
+    },
+    async updateRanks (context, todos) {
+      context.commit('setTodos', todos)
+
+      const max = Math.max(...todos.map(({ id, rank }) => rank || id))
+
+      const data = todos.map((todo, index) => ({
+        id: todo.id,
+        rank: max - index
+      }))
+
+      try {
+        await client.put('/api/v1/rank/', data)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }
