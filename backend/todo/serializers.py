@@ -12,6 +12,8 @@ class TodoListSerializer(serializers.ModelSerializer):
 
 
 class TodoDetailSerializer(serializers.ModelSerializer):
+    body = serializers.CharField(allow_blank=True)
+
     class Meta:
         model = Todo
 
