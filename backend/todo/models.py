@@ -15,5 +15,12 @@ class Todo(models.Model):
 
     done = models.BooleanField(default=False)
 
+    rank = models.PositiveBigIntegerField(default=0)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.rank = self.id
+        super().save()
+
     def __str__(self) -> str:
         return self.title
