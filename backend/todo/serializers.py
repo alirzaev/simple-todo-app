@@ -8,7 +8,7 @@ class TodoListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
 
-        fields = ('id', 'title', 'done', 'created_at', 'updated_at',)
+        fields = ('id', 'title', 'done', 'rank', 'created_at', 'updated_at',)
 
 
 class TodoDetailSerializer(serializers.ModelSerializer):
@@ -17,4 +17,13 @@ class TodoDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
 
-        fields = ('id', 'title', 'body', 'done', 'created_at', 'updated_at',)
+        fields = ('id', 'title', 'body', 'done', 'rank', 'created_at', 'updated_at',)
+
+
+class TodoRankListSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    
+    class Meta:
+        model = Todo
+
+        fields = ('id', 'rank',)
