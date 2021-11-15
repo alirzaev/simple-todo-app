@@ -13,5 +13,7 @@ class Todo(models.Model):
 
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
 
+    done = models.BooleanField(default=False)
+
     def __str__(self) -> str:
         return self.title

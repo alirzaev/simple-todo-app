@@ -12,7 +12,7 @@ class ListTodo(generics.ListCreateAPIView):
     serializer_class = TodoListSerializer
 
     def get_queryset(self):
-        return Todo.objects.filter(user=self.request.user.id)
+        return Todo.objects.filter(user=self.request.user.id, done=False)
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
