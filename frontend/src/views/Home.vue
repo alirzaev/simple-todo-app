@@ -1,18 +1,35 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <div class="row justify-content-center">
+    <div class="todos col-md-6 col-sm-12 pt-2 pb-2">
+      <TodoListItem v-for="todo in todos" v-bind:key="todo.id" :title="todo.title"/>
+    </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import HelloWorld from '@/components/HelloWorld.vue' // @ is an alias to /src
+<script>
+import TodoListItem from '@/components/TodoListItem'
 
-export default defineComponent({
+export default {
   name: 'Home',
   components: {
-    HelloWorld
+    TodoListItem
+  },
+  created () {
+    this.$store.dispatch('loadTodos')
+  },
+  computed: {
+    todos () {
+      return this.$store.state.todos.list
+    }
   }
-})
+}
 </script>
+
+<style lang="scss" scoped>
+.todos {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 20px;
+}
+</style>
