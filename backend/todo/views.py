@@ -18,6 +18,15 @@ class ListTodo(generics.ListCreateAPIView):
         serializer.save(user=self.request.user)
 
 
+class ListDoneTodo(generics.ListAPIView):
+    permission_classes = (permissions.IsAuthenticated, IsOwner,)
+
+    serializer_class = TodoListSerializer
+
+    def get_queryset(self):
+        return Todo.objects.filter(user=self.request.user.id, done=True)
+
+
 class DetailTodo(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated, IsOwner,)
 
