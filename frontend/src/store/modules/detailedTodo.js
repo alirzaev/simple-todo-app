@@ -1,6 +1,7 @@
 import { api } from '@/api'
 
 export default {
+  namespaced: true,
   state: () => ({
     todo: undefined,
     pending: false,
@@ -11,10 +12,10 @@ export default {
     setTodo (state, todo) {
       state.todo = todo
     },
-    setTodoTitle (state, title) {
+    setTitle (state, title) {
       state.todo.title = title
     },
-    setTodoBody (state, body) {
+    setBody (state, body) {
       state.todo.body = body
     },
     setError (state, error) {
@@ -28,7 +29,7 @@ export default {
     }
   },
   actions: {
-    async loadTodo ({ commit }, id) {
+    async load ({ commit }, id) {
       commit('setPending', true)
       commit('setTodo', undefined)
       commit('setError', undefined)
@@ -45,7 +46,7 @@ export default {
         commit('setPending', false)
       }
     },
-    async updateTodo ({ commit, state }, patch = {}) {
+    async update ({ commit, state }, patch = {}) {
       commit('setPending', true)
       commit('setError', undefined)
 
@@ -65,10 +66,10 @@ export default {
         commit('setPending', false)
       }
     },
-    async toggleTodoDone ({ commit, state, dispatch }) {
+    async toggleDone ({ commit, state, dispatch }) {
       commit('setSpinnerVisible', true)
 
-      await dispatch('updateTodo', { done: !state.todo.done })
+      await dispatch('update', { done: !state.todo.done })
 
       commit('setSpinnerVisible', false)
     }

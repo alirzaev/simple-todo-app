@@ -1,6 +1,7 @@
 import { api } from '@/api'
 
 export default {
+  namespaced: true,
   state: () => ({
     task: '',
     pending: false,
@@ -18,7 +19,7 @@ export default {
     }
   },
   actions: {
-    async addTodo ({ commit, dispatch, state }) {
+    async add ({ commit, dispatch, state }) {
       try {
         commit('setPending', true)
         commit('setError', undefined)
@@ -28,7 +29,7 @@ export default {
         })
 
         commit('setTask', '')
-        dispatch('loadTodos')
+        dispatch('todos/load', null, { root: true })
       } catch (error) {
         commit('setError', error.response?.data ?? true)
       } finally {

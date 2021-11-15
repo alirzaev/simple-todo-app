@@ -20,11 +20,11 @@ export default {
     TodoListItem
   },
   created () {
-    this.$store.dispatch('loadTodos')
+    this.$store.dispatch('todos/load')
   },
   computed: {
     todos () {
-      return this.$store.state.todos.list
+      return this.$store.state.todos.todos
     }
   }
 }

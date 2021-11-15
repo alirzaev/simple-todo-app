@@ -18,7 +18,7 @@
 <script>
 export default {
   created () {
-    this.$store.dispatch('loadToken')
+    this.$store.dispatch('auth/loadToken')
   },
   computed: {
     isAuth () {
@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     logout () {
-      this.$store.dispatch('logout')
+      this.$store.dispatch('auth/logout')
         .then(() => this.$router.push({ name: 'Login' }))
     }
   }

@@ -37,36 +37,36 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: 'Todo',
   created () {
-    this.$store.dispatch('loadTodo', this.$route.params.id)
+    this.$store.dispatch('detailedTodo/load', this.$route.params.id)
   },
   methods: {
-    ...mapActions({
-      update: 'updateTodo',
-      toggleDone: 'toggleTodoDone'
+    ...mapActions('detailedTodo', {
+      update: 'update',
+      toggleDone: 'toggleDone'
     })
   },
   computed: {
     ...mapState({
-      todo: state => state.detailTodo.todo,
-      done: state => state.detailTodo.todo?.done ?? false,
-      spinner: state => state.detailTodo.spinnerVisible,
-      pending: state => state.detailTodo.pending,
-      error: state => state.detailTodo.error
+      todo: state => state.detailedTodo.todo,
+      done: state => state.detailedTodo.todo?.done ?? false,
+      spinner: state => state.detailedTodo.spinnerVisible,
+      pending: state => state.detailedTodo.pending,
+      error: state => state.detailedTodo.error
     }),
     title: {
       get () {
-        return this.$store.state.detailTodo.todo?.title ?? ''
+        return this.$store.state.detailedTodo.todo?.title ?? ''
       },
       set (value) {
-        this.$store.commit('setTodoTitle', value)
+        this.$store.commit('detailedTodo/setTitle', value)
       }
     },
     body: {
       get () {
-        return this.$store.state.detailTodo.todo?.body ?? ''
+        return this.$store.state.detailedTodo.todo?.body ?? ''
       },
       set (value) {
-        this.$store.commit('setTodoBody', value)
+        this.$store.commit('detailedTodo/setBody', value)
       }
     }
   }

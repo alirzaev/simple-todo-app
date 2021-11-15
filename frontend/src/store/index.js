@@ -1,8 +1,8 @@
 import { createStore } from 'vuex'
+import newTodo from './modules/newTodo'
 import auth from './modules/auth'
+import detailedTodo from './modules/detailedTodo'
 import todos from './modules/todos'
-import detailTodo from './modules/detailTodo'
-import addTodo from './modules/addTodo'
 
 export default createStore({
   state: {
@@ -13,8 +13,8 @@ export default createStore({
   },
   modules: {
     auth,
-    todos,
-    detailTodo,
-    addTodo
+    detailedTodo,
+    newTodo,
+    todos
   }
 })

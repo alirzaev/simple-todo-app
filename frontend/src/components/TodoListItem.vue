@@ -15,7 +15,7 @@ export default {
     id: Number
   },
   methods: {
-    ...mapActions([
+    ...mapActions('todos', [
       'makeDone'
     ]),
     openTodo () {

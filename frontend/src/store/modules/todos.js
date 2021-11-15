@@ -1,22 +1,23 @@
 import { api } from '@/api'
 
 export default {
+  namespaced: true,
   state: () => ({
-    list: []
+    todos: []
   }),
   mutations: {
-    setTodosList (state, list) {
-      state.list = list
+    setTodos (state, todos) {
+      state.todos = todos
     }
   },
   actions: {
-    async loadTodos (context) {
+    async load (context) {
       try {
         const response = await api.get('/api/v1/')
 
         const data = response.data
 
-        context.commit('setTodosList', data)
+        context.commit('setTodos', data)
       } catch (error) {
         console.log(error)
       }
@@ -27,7 +28,7 @@ export default {
           done: true
         })
 
-        await dispatch('loadTodos')
+        await dispatch('load')
       } catch (error) {
         console.log(error)
       }

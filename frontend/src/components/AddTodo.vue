@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="addTodo">
+  <form @submit.prevent="add">
     <div class="input-group mb-3">
       <input type="text" class="form-control" placeholder="Новая задача" v-model="task" :disabled="pending"
              maxlength="200" required/>
@@ -17,21 +17,21 @@ import { mapActions, mapState } from 'vuex'
 export default {
   name: 'AddTodo',
   methods: {
-    ...mapActions([
-      'addTodo'
+    ...mapActions('newTodo', [
+      'add'
     ])
   },
   computed: {
     ...mapState({
-      pending: state => state.detailTodo.pending,
-      error: state => state.detailTodo.error
+      pending: state => state.newTodo.pending,
+      error: state => state.newTodo.error
     }),
     task: {
       get () {
-        return this.$store.state.addTodo.task
+        return this.$store.state.newTodo.task
       },
       set (value) {
-        this.$store.commit('setTask', value)
+        this.$store.commit('newTodo/setTask', value)
       }
     }
   }
