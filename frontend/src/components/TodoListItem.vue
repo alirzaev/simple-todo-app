@@ -47,8 +47,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "@/../node_modules/bootstrap/scss/functions";
-@import "@/../node_modules/bootstrap/scss/variables";
+@import "@/../node_modules/bootstrap/scss/_functions";
+@import "@/../node_modules/bootstrap/scss/_variables";
 
 .todo {
   background-color: #f8f9fa;

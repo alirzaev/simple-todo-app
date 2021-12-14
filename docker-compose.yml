@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  proxy:
+    image: traefik:v2.5
+    ports:
+      - '80:80'
+      - '8080:8080'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --api.insecure=true --providers.docker
+    labels:
+      - traefik.enable=true
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VUE_APP_API_URL: '/'
+    deploy:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.frontend-http.rule=PathPrefix(`/`)
+      - traefik.http.services.frontend.loadbalancer.server.port=80
+  db:
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+  backend:
+    build:
+      context: './backend'
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DJANGO_SETTINGS_MODULE: 'config.settings_docker'
+      DATABASE_URL: 'postgresql://postgres:postgres@db/postgres'
+    command: ["./docker/wait-for-it.sh", "db:5432", "--", "./docker/runserver.sh"]
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.backend-http.rule=PathPrefix(`/api/v1`) || PathPrefix(`/admin`) || PathPrefix(`/static`)
+      - traefik.http.services.backend.loadbalancer.server.port=80
