@@ -12,32 +12,25 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from '@vue/reactivity'
 import draggable from 'vuedraggable'
+
 import AddTodo from '@/components/AddTodo'
 import TodoListItem from '@/components/TodoListItem'
+import { useTodosService } from '@/services/todos'
 
-export default {
-  name: 'Home',
-  components: {
-    AddTodo,
-    TodoListItem,
-    draggable
-  },
-  created () {
-    this.$store.dispatch('todos/load')
-  },
-  computed: {
-    todos: {
-      get () {
-        return this.$store.state.todos.todos
-      },
-      set (value) {
-        this.$store.dispatch('todos/updateRanks', value)
-      }
-    }
+const todosService = useTodosService()
+const { load, updateRanks } = todosService
+
+const todos = computed({
+  get: () => todosService.todos.value,
+  set: (value) => {
+    updateRanks(value)
   }
-}
+})
+
+load()
 </script>
 
 <style lang="scss" scoped>

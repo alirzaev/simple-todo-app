@@ -1,39 +1,28 @@
 <template>
   <form @submit.prevent="add">
     <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Новая задача" v-model="task" :disabled="pending"
+      <input type="text" class="form-control" placeholder="Новая задача" v-model="task" :disabled="isPending"
              maxlength="200" required/>
-      <button class="btn btn-outline-primary" type="submit" :disabled="pending">
-        <span v-if="pending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      <button class="btn btn-outline-primary" type="submit" :disabled="isPending">
+        <span v-if="isPending" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         <i v-else class="bi bi-plus"></i>
       </button>
     </div>
   </form>
 </template>
 
-<script>
-import { mapActions, mapState } from 'vuex'
+<script setup>
+import { computed } from '@vue/reactivity'
 
-export default {
-  name: 'AddTodo',
-  methods: {
-    ...mapActions('newTodo', [
-      'add'
-    ])
-  },
-  computed: {
-    ...mapState({
-      pending: state => state.newTodo.pending,
-      error: state => state.newTodo.error
-    }),
-    task: {
-      get () {
-        return this.$store.state.newTodo.task
-      },
-      set (value) {
-        this.$store.commit('newTodo/setTask', value)
-      }
-    }
+import { useNewTodoService } from '@/services/newTodo'
+
+const newTodoService = useNewTodoService()
+
+const { add, isPending } = newTodoService
+const task = computed({
+  get: () => newTodoService.task.value,
+  set: (value) => {
+    newTodoService.task.value = value
   }
-}
+})
 </script>

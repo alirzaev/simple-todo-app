@@ -9,23 +9,13 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import TodoListItem from '@/components/TodoListItem'
+import { useDoneTodosService } from '@/services/doneTodos'
 
-export default {
-  name: 'DoneTodos',
-  components: {
-    TodoListItem
-  },
-  created () {
-    this.$store.dispatch('doneTodos/load')
-  },
-  computed: {
-    todos () {
-      return this.$store.state.doneTodos.todos
-    }
-  }
-}
+const { load, todos } = useDoneTodosService()
+
+load()
 </script>
 
 <style lang="scss">

@@ -1,9 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
 import Todo from '@/views/Todo.vue'
 import DoneTodos from '@/views/DoneTodos.vue'
-import store from '@/store'
+import { useAuthService } from '@/services/auth'
+
+const { token } = useAuthService()
 
 const routes = [
   {
@@ -33,8 +36,8 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  const isAuthenticated = Boolean(store.state.auth.token)
+router.beforeEach((to, _, next) => {
+  const isAuthenticated = Boolean(token.value)
 
   if (to.name !== 'Login' && !isAuthenticated) {
     next({ name: 'Login' })

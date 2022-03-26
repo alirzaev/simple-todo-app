@@ -1,47 +1,44 @@
 <template>
   <div class="todo">
-      <span class="todo__title text-primary" @click="openTodo">{{ title }}</span>
-      <i class="todo__icon ms-3 bi" :class="classes" @click="toggleDone(id)"></i>
+    <span class="todo__title text-primary" @click="openTodo">{{ title }}</span>
+    <i class="todo__icon ms-3 bi" :class="classes" @click="toggleDone(id)"></i>
   </div>
 </template>
 
-<script>
-import { mapActions } from 'vuex'
+<script setup>
+import { computed } from '@vue/reactivity'
+import { defineProps } from 'vue'
+import { useRouter } from 'vue-router'
 
-export default {
-  name: 'TodoListItem',
-  props: {
-    id: Number,
-    title: String,
-    done: Boolean
-  },
-  computed: {
-    classes () {
-      return [this.done ? 'bi-check-circle' : 'bi-circle']
+import { useTodosService } from '@/services/todos'
+import { useDoneTodosService } from '@/services/doneTodos'
+
+const { makeDone } = useTodosService()
+const { makeUndone } = useDoneTodosService()
+const router = useRouter()
+
+const props = defineProps({
+  id: Number,
+  title: String,
+  done: Boolean
+})
+
+const classes = computed(() => [props.done ? 'bi-check-circle' : 'bi-circle'])
+
+const openTodo = () => {
+  router.push({
+    name: 'Todo',
+    params: {
+      id: props.id
     }
-  },
-  methods: {
-    ...mapActions('todos', [
-      'makeDone'
-    ]),
-    ...mapActions('doneTodos', [
-      'makeUndone'
-    ]),
-    openTodo () {
-      this.$router.push({
-        name: 'Todo',
-        params: {
-          id: this.$props.id
-        }
-      })
-    },
-    toggleDone () {
-      if (this.done) {
-        this.makeUndone(this.id)
-      } else {
-        this.makeDone(this.id)
-      }
-    }
+  })
+}
+
+const toggleDone = () => {
+  if (props.done) {
+    makeUndone(props.id)
+  } else {
+    makeDone(props.id)
   }
 }
 </script>
