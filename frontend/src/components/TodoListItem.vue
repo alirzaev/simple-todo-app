@@ -43,8 +43,8 @@ export default {
 @import "@/../node_modules/bootstrap/scss/_variables";
 
 .todo {
-  background-color: #f8f9fa;
-  box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.25);
+  background-color: $gray-100;
+  box-shadow: 0 0 0.25rem rgba($black, 0.25);
   border-radius: 0.25rem;
   cursor: pointer;
   display: flex;
@@ -54,7 +54,7 @@ export default {
   transition: box-shadow 0.15s ease-in-out;
 
   &:hover {
-    box-shadow: 0 0 0.75rem rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 0 .25rem rgba($primary,.25);
   }
 
   &__icon {
