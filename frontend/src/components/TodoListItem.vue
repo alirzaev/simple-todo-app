@@ -1,44 +1,39 @@
 <template>
   <div class="todo">
     <span class="todo__title text-primary" @click="openTodo">{{ title }}</span>
-    <i class="todo__icon ms-3 bi" :class="classes" @click="toggleDone(id)"></i>
+    <i class="todo__icon ms-3 bi" :class="classes" @click="$emit('toggle')"></i>
   </div>
 </template>
 
-<script setup>
+<script>
 import { computed } from '@vue/reactivity'
-import { defineProps } from 'vue'
 import { useRouter } from 'vue-router'
 
-import { useTodosService } from '@/services/todos'
-import { useDoneTodosService } from '@/services/doneTodos'
+export default {
+  props: {
+    id: Number,
+    title: String,
+    done: Boolean
+  },
+  emits: ['toggle'],
+  setup (props) {
+    const router = useRouter()
 
-const { makeDone } = useTodosService()
-const { makeUndone } = useDoneTodosService()
-const router = useRouter()
+    const classes = computed(() => [props.done ? 'bi-check-circle' : 'bi-circle'])
 
-const props = defineProps({
-  id: Number,
-  title: String,
-  done: Boolean
-})
-
-const classes = computed(() => [props.done ? 'bi-check-circle' : 'bi-circle'])
-
-const openTodo = () => {
-  router.push({
-    name: 'Todo',
-    params: {
-      id: props.id
+    const openTodo = () => {
+      router.push({
+        name: 'Todo',
+        params: {
+          id: props.id
+        }
+      })
     }
-  })
-}
 
-const toggleDone = () => {
-  if (props.done) {
-    makeUndone(props.id)
-  } else {
-    makeDone(props.id)
+    return {
+      classes,
+      openTodo
+    }
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-md-6 col-sm-12">
-      <form @submit.prevent="onLogin">
+      <form @submit.prevent="onSubmit">
         <div class="mb-3">
           <label for="username" class="form-label">Имя пользователя</label>
           <input type="text" name="username" id="username" class="form-control" v-model="username"
@@ -25,40 +25,52 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { computed, ref } from '@vue/reactivity'
 import { useRouter } from 'vue-router'
 
 import { useAuthService } from '@/services/auth'
 
-const { login, isPending, error } = useAuthService()
-const router = useRouter()
+export default {
+  setup () {
+    const { login, isPending, error } = useAuthService()
+    const router = useRouter()
 
-const username = ref('')
-const password = ref('')
+    const username = ref('')
+    const password = ref('')
 
-const errors = computed(() => {
-  const err = error.value
+    const errors = computed(() => {
+      const err = error.value
 
-  if (!err) {
-    return []
-  } else if (typeof err === 'object' && 'non_field_errors' in err) {
-    return err.non_field_errors
-  } else {
-    return ['Неизвестная ошибка']
-  }
-})
+      if (!err) {
+        return []
+      } else if (typeof err === 'object' && 'non_field_errors' in err) {
+        return err.non_field_errors
+      } else {
+        return ['Неизвестная ошибка']
+      }
+    })
 
-const onLogin = () => {
-  login({
-    username: username.value,
-    password: password.value
-  }).then(success => {
-    if (success) {
-      router.replace({
-        name: 'Home'
+    const onSubmit = () => {
+      login({
+        username: username.value,
+        password: password.value
+      }).then(success => {
+        if (success) {
+          router.replace({
+            name: 'Home'
+          })
+        }
       })
     }
-  })
+
+    return {
+      username,
+      password,
+      isPending,
+      errors,
+      onSubmit
+    }
+  }
 }
 </script>

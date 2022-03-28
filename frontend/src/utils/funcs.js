@@ -1,4 +1,5 @@
 import router from '@/router'
+import { client } from '@/api'
 import { useAuthService } from '@/services/auth'
 
 const { token, logout } = useAuthService()
@@ -21,4 +22,25 @@ export function setupAxiosInterceptors (axiosClient) {
       })
     }
   })
+}
+
+export function patchTodo (id, patch) {
+  return client.patch(`/api/v1/${id}/`, patch)
+}
+
+export function createTodo (title) {
+  return client.post('/api/v1/', {
+    title
+  })
+}
+
+export function updateRanks (todos) {
+  const max = Math.max(...todos.map(({ id, rank }) => rank || id))
+
+  const data = todos.map((todo, index) => ({
+    id: todo.id,
+    rank: max - index
+  }))
+
+  return client.put('/api/v1/rank/', data).then(() => true).catch(() => false)
 }

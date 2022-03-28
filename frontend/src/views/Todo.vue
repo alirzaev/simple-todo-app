@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-content-center pt-2">
     <div class="col-md-6 col-sm-12">
-      <form @submit.prevent="update">
+      <form @submit.prevent="updateTodo">
         <div class="input-group mb-3">
           <input type="text" class="form-control" v-model="title" :disabled="isPending" maxlength="200" required/>
           <button class="btn btn-outline-success" type="button" :disabled="isPending" @click="toggleDone" v-if="todo">
@@ -31,28 +31,51 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from '@vue/reactivity'
+<script>
+import { computed, ref } from '@vue/reactivity'
+import { onMounted } from '@vue/runtime-core'
 import { useRoute } from 'vue-router'
 
 import { useDetailedTodoService } from '@/services/detailedTodo'
 
-const { todo, load, spinner, isPending, error, update, toggleDone } = useDetailedTodoService()
-const route = useRoute()
+export default {
+  setup () {
+    const { todo, fetchTodo, isPending, error, updateTodo } = useDetailedTodoService()
+    const route = useRoute()
 
-const done = computed(() => todo.value?.done ?? false)
-const title = computed({
-  get: () => todo.value?.title,
-  set: (value) => {
-    todo.value.title = value
-  }
-})
-const body = computed({
-  get: () => todo.value?.body,
-  set: (value) => {
-    todo.value.body = value
-  }
-})
+    const spinner = ref(false)
 
-load(route.params.id)
+    const toggleDone = async () => {
+      spinner.value = true
+
+      await updateTodo({ done: !todo.value.done })
+
+      spinner.value = false
+    }
+
+    onMounted(() => fetchTodo(route.params.id))
+
+    return {
+      todo,
+      spinner,
+      isPending,
+      error,
+      updateTodo,
+      toggleDone,
+      done: computed(() => todo.value?.done ?? false),
+      title: computed({
+        get: () => todo.value?.title,
+        set: (value) => {
+          todo.value.title = value
+        }
+      }),
+      body: computed({
+        get: () => todo.value?.body,
+        set: (value) => {
+          todo.value.body = value
+        }
+      })
+    }
+  }
+}
 </script>

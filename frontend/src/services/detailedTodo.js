@@ -1,9 +1,6 @@
 import { readonly, ref } from 'vue'
 
 import { client } from '@/api'
-import { useTodosService } from '@/services/todos'
-
-const { update: updateTodo } = useTodosService()
 
 const todo = ref(undefined)
 
@@ -11,9 +8,7 @@ const isPending = ref(false)
 
 const error = ref(undefined)
 
-const spinner = ref(false)
-
-const load = async (id) => {
+const fetchTodo = async (id) => {
   isPending.value = true
   todo.value = undefined
   error.value = undefined
@@ -29,17 +24,17 @@ const load = async (id) => {
   }
 }
 
-const update = async (patch = {}) => {
+const updateTodo = async (patch = {}) => {
   isPending.value = true
   error.value = undefined
 
   try {
-    const data = await updateTodo({
+    const response = await client.put(`/api/v1/${todo.value.id}/`, {
       ...todo.value,
       ...patch
     })
 
-    todo.value = data
+    todo.value = response.data
   } catch (err) {
     error.value = err.response?.data ?? true
   } finally {
@@ -47,20 +42,10 @@ const update = async (patch = {}) => {
   }
 }
 
-const toggleDone = async () => {
-  spinner.value = true
-
-  await update({ done: !todo.value.done })
-
-  spinner.value = false
-}
-
 export const useDetailedTodoService = () => ({
   todo: readonly(todo),
   isPending: readonly(isPending),
   error: readonly(error),
-  spinner: readonly(spinner),
-  load,
-  update,
-  toggleDone
+  fetchTodo,
+  updateTodo
 })

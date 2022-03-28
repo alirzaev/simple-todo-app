@@ -2,19 +2,11 @@ import { readonly, ref } from 'vue'
 
 import { client } from '@/api'
 
-const token = ref(undefined)
+const token = ref(localStorage.getItem('token') ?? undefined)
 
 const isPending = ref(false)
 
 const error = ref(undefined)
-
-const loadToken = () => {
-  const tkn = localStorage.getItem('token')
-
-  if (tkn) {
-    token.value = tkn
-  }
-}
 
 const login = async ({ username, password }) => {
   try {
@@ -40,7 +32,7 @@ const login = async ({ username, password }) => {
   }
 }
 
-const logout = () => {
+const logout = async () => {
   localStorage.removeItem('token')
 
   token.value = undefined
@@ -50,7 +42,6 @@ export const useAuthService = () => ({
   token: readonly(token),
   isPending: readonly(isPending),
   error: readonly(error),
-  loadToken,
   login,
   logout
 })

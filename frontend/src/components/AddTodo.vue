@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="add">
+  <form @submit.prevent="onSubmit">
     <div class="input-group mb-3">
       <input type="text" class="form-control" placeholder="Новая задача" v-model="task" :disabled="isPending"
              maxlength="200" required/>
@@ -11,18 +11,39 @@
   </form>
 </template>
 
-<script setup>
-import { computed } from '@vue/reactivity'
+<script>
+import { ref } from '@vue/reactivity'
 
-import { useNewTodoService } from '@/services/newTodo'
+import { useTodosService } from '@/services/todos'
+import { createTodo } from '@/utils/funcs'
 
-const newTodoService = useNewTodoService()
+export default {
+  setup () {
+    const { fetchTodos } = useTodosService()
 
-const { add, isPending } = newTodoService
-const task = computed({
-  get: () => newTodoService.task.value,
-  set: (value) => {
-    newTodoService.task.value = value
+    const task = ref('')
+    const isPending = ref(false)
+
+    const onSubmit = async () => {
+      try {
+        isPending.value = true
+
+        await createTodo(task.value)
+
+        task.value = ''
+
+        fetchTodos()
+      } catch (error) {
+      } finally {
+        isPending.value = false
+      }
+    }
+
+    return {
+      onSubmit,
+      isPending,
+      task
+    }
   }
-})
+}
 </script>

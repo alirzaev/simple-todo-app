@@ -3,7 +3,7 @@
     <div class="col-md-6 col-sm-12 mb-3">
       <draggable class="todos" v-model="todos" item-key="id">
         <template #item="{element}">
-          <TodoListItem :key="element.id" :id="element.id" :title="element.title" :done="element.done"/>
+          <TodoListItem :key="element.id" :id="element.id" :title="element.title" :done="element.done" @toggle="toggleDone(element)"/>
         </template>
       </draggable>
       <AddTodo/>
@@ -12,25 +12,46 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import { computed } from '@vue/reactivity'
+import { onMounted } from '@vue/runtime-core'
 import draggable from 'vuedraggable'
 
 import AddTodo from '@/components/AddTodo'
 import TodoListItem from '@/components/TodoListItem'
 import { useTodosService } from '@/services/todos'
+import { patchTodo, updateRanks } from '@/utils/funcs'
 
-const todosService = useTodosService()
-const { load, updateRanks } = todosService
+export default {
+  components: {
+    AddTodo,
+    TodoListItem,
+    draggable
+  },
+  setup () {
+    const { todos, fetchTodos } = useTodosService()
 
-const todos = computed({
-  get: () => todosService.todos.value,
-  set: (value) => {
-    updateRanks(value)
+    const toggleDone = async (todo) => {
+      patchTodo(todo.id, {
+        done: !todo.done
+      })
+        .then(() => fetchTodos())
+    }
+
+    onMounted(() => fetchTodos())
+
+    return {
+      todos: computed({
+        get: () => todos.value,
+        set: (value) => {
+          todos.value = value
+          updateRanks(value)
+        }
+      }),
+      toggleDone
+    }
   }
-})
-
-load()
+}
 </script>
 
 <style lang="scss" scoped>
