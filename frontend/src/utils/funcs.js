@@ -1,14 +1,21 @@
 import router from '@/router'
 import { client } from '@/api'
 import { useAuthService } from '@/services/auth'
+import { useProgressBarService } from '@/services/progress'
 
 const { token, logout } = useAuthService()
+const { show, hide } = useProgressBarService()
 
 export function setupAxiosInterceptors (axiosClient) {
   axiosClient.interceptors.request.use((config) => {
     if (!config.url.endsWith('auth/login/')) {
       config.headers.Authorization = `Token ${token.value}`
     }
+
+    return config
+  })
+  axiosClient.interceptors.request.use((config) => {
+    show()
 
     return config
   })
@@ -21,6 +28,13 @@ export function setupAxiosInterceptors (axiosClient) {
         name: 'Login'
       })
     }
+  })
+  axiosClient.interceptors.response.use((response) => {
+    hide()
+
+    return response
+  }, () => {
+    hide()
   })
 }
 
