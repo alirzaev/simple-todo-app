@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-content-center">
-    <div class="col-md-6 col-sm-12">
+    <div class="col-md-6 col-sm-12 mb-3">
       <h1 class="header">Завершенные</h1>
       <div class="todos">
         <TodoListItem v-for="todo in todos" v-bind:key="todo.id" :id="todo.id" :title="todo.title" :done="todo.done" @toggle="toggleDone(todo)"/>
