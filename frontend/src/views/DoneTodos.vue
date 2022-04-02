@@ -5,6 +5,7 @@
       <div class="todos">
         <TodoListItem v-for="todo in todos" v-bind:key="todo.id" :id="todo.id" :title="todo.title" :done="todo.done" @toggle="toggleDone(todo)"/>
       </div>
+      <router-link :to="{ name: 'Home' }">К списку задач</router-link>
     </div>
   </div>
 </template>
