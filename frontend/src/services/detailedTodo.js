@@ -43,7 +43,7 @@ const updateTodo = async (patch = {}) => {
 }
 
 export const useDetailedTodoService = () => ({
-  todo: readonly(todo),
+  todo: todo,
   isPending: readonly(isPending),
   error: readonly(error),
   fetchTodo,
