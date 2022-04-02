@@ -1,11 +1,14 @@
 <template>
   <div class="row justify-content-center">
     <div class="col-md-6 col-sm-12 mb-3">
-      <draggable class="todos" v-model="todos" item-key="id">
+      <draggable v-if="todos.length > 0" class="todos" v-model="todos" item-key="id">
         <template #item="{element}">
           <TodoListItem :key="element.id" :id="element.id" :title="element.title" :done="element.done" @toggle="toggleDone(element)"/>
         </template>
       </draggable>
+      <div v-else class="todos__empty">
+        <span class="text-secondary text-center">Список пуст</span>
+      </div>
       <AddTodo/>
       <router-link :to="{ name: 'DoneTodos' }">Завершенные</router-link>
     </div>
@@ -60,6 +63,12 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   gap: 20px;
+  margin: 20px 0;
+}
+
+.todos__empty {
+  display: flex;
+  justify-content: center;
   margin: 20px 0;
 }
 </style>
